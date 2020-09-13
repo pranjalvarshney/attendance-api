@@ -40,7 +40,7 @@ exports.markAttendance = (req, res) => {
       if (tokenValidates) {
         Attendance.create(
           {
-            sname: req.body.sname,
+            name: req.body.name,
             courseCode: req.body.courseCode,
             rollno: req.body.rollno,
             portalId: portal._id,
@@ -61,13 +61,12 @@ exports.markAttendance = (req, res) => {
 
 exports.showAllAttendance = (req, res) => {
   Attendance.find()
-    .populate("portalId")
-    .select("-_id -courseCode -class -portalId -createdAt -updatedAt")
+    // .select("-_id -courseCode -class -createdAt -updatedAt -__v")
     .exec((err, atts) => {
       if (err) {
         return res.status(400).json("No data found! Error!")
       }
-      res.status(200).json(atts)
+      res.status(200).json({ students: atts })
     })
 }
 

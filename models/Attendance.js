@@ -3,7 +3,7 @@ const mongoose = require("mongoose")
 const attendanceSchema = new mongoose.Schema(
   {
     name: String,
-    rollno: String,
+    rollno: Number,
     courseCode: String,
     class: String,
     portalId: {
