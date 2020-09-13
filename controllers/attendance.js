@@ -62,6 +62,7 @@ exports.markAttendance = (req, res) => {
 exports.showAllAttendance = (req, res) => {
   Attendance.find()
     .populate("portalId")
+    .select("-_id -courseCode -class -portalId -createdAt -updatedAt")
     .exec((err, atts) => {
       if (err) {
         return res.status(400).json("No data found! Error!")

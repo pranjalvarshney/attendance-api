@@ -2,7 +2,7 @@ const mongoose = require("mongoose")
 
 const attendanceSchema = new mongoose.Schema(
   {
-    sname: String,
+    name: String,
     rollno: String,
     courseCode: String,
     class: String,
