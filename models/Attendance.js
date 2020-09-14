@@ -2,10 +2,22 @@ const mongoose = require("mongoose")
 
 const attendanceSchema = new mongoose.Schema(
   {
-    name: String,
-    rollno: Number,
-    courseCode: String,
-    class: String,
+    name: {
+      type: String,
+      required: true,
+    },
+    rollno: {
+      type: Number,
+      required: true,
+    },
+    courseCode: {
+      type: String,
+      required: true,
+    },
+    class: {
+      type: String,
+      required: true,
+    },
     portalId: {
       type: mongoose.Schema.ObjectId,
       ref: "Portal",
