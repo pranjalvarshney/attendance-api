@@ -29,7 +29,7 @@ exports.markAttendance = (req, res) => {
       if (err || !portal) {
         return res.status(400).json("Invalid class or course code")
       }
-      console.log(portal.secret)
+      // console.log(portal.secret)
       const tokenValidates = speakeasy.totp.verify({
         secret: portal.secret,
         encoding: "base32",
@@ -42,12 +42,16 @@ exports.markAttendance = (req, res) => {
           {
             name: req.body.name,
             courseCode: req.body.courseCode,
+            class: req.body.class,
             rollno: req.body.rollno,
             portalId: portal._id,
           },
           (err, attendance) => {
             if (err) {
-              return res.status(400).json("An error occured")
+              return res.status(400).json({
+                error: "An error occured",
+                err,
+              })
             }
             res.status(200).json(attendance)
           }
