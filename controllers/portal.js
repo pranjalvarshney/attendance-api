@@ -28,7 +28,7 @@ exports.createPortal = (req, res) => {
   var otp = speakeasy.totp({
     secret: req.body.secret,
     encoding: "base32",
-    step: 180,
+    step: 300,
     // window: 6,
   })
   Portal.create(req.body, (err, portal) => {
@@ -59,3 +59,29 @@ exports.closePortal = (req, res) => {
     }
   )
 }
+exports.openPortal = (req, res) => {
+  Portal.findOneAndUpdate(
+    {
+      _id: req.portal._id,
+    },
+    {
+      $set: { status: true },
+    },
+    {
+      new: true,
+      useFindAndModify: false,
+    },
+    (err, portal) => {
+      if (err) {
+        return res.status(400).json("Error in updating")
+      }
+      res.json(portal)
+    }
+  )
+}
+
+// exports.findPortalByDate = (req,res) =>{
+//   Portal.find({createdAt: {
+
+//   }})
+// }

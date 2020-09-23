@@ -34,28 +34,54 @@ exports.markAttendance = (req, res) => {
         secret: portal.secret,
         encoding: "base32",
         token: req.body.otp,
-        step: 180,
+        step: 300,
         // window: 6, // will be valid for 6*30 - 180  seconds
       })
       if (tokenValidates) {
-        Attendance.create(
+        Portal.findOneAndUpdate(
+          { _id: portal._id },
           {
-            name: req.body.name,
-            courseCode: req.body.courseCode,
-            class: req.body.class,
-            rollno: req.body.rollno,
-            portalId: portal._id,
+            $push: {
+              attendance: {
+                name: req.body.name,
+                rollno: req.body.rollno,
+                courseCode: req.body.courseCode,
+                class: req.body.class,
+              },
+            },
           },
-          (err, attendance) => {
+          {
+            new: true,
+            useFindAndModify: false,
+          },
+          (err, updatedPortal) => {
             if (err) {
               return res.status(400).json({
                 error: "An error occured",
                 err,
               })
             }
-            res.status(200).json(attendance)
+            res.json(updatedPortal)
           }
         )
+        // Attendance.create(
+        //   {
+        //     name: req.body.name,
+        //     courseCode: req.body.courseCode,
+        //     class: req.body.class,
+        //     rollno: req.body.rollno,
+        //     portalId: portal._id,
+        //   },
+        //   (err, attendance) => {
+        //     if (err) {
+        //       return res.status(400).json({
+        //         error: "An error occured",
+        //         err,
+        //       })
+        //     }
+        //     res.status(200).json(attendance)
+        //   }
+        // )
       } else {
         res.json("Invalid OTP")
       }
