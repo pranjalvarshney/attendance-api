@@ -1,5 +1,6 @@
 const Portal = require("../models/Portal")
 const speakeasy = require("speakeasy")
+const { json } = require("express")
 
 exports.getPortalById = (req, res, next, id) => {
   Portal.findById(id).exec((err, portal) => {
@@ -80,8 +81,24 @@ exports.openPortal = (req, res) => {
   )
 }
 
-// exports.findPortalByDate = (req,res) =>{
-//   Portal.find({createdAt: {
+exports.findPortalByDate = (req, res) => {
+  Portal.find({
+    courseCode: req.query.coursecode,
+    class: req.query.class,
+  }).exec((err, portal) => {
+    if (err) {
+      return res.json(err)
+    }
 
-//   }})
-// }
+    if (!req.query.date) {
+      res.json(portal)
+    }
+    portal.map((p) => {
+      if (p.createdAt.toISOString().slice(0, 10) === req.query.date) {
+        res.json(p)
+      } else {
+        res.json(`No Portal found with date ${req.query.date}`)
+      }
+    })
+  })
+}
