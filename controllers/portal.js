@@ -91,7 +91,7 @@ exports.findPortalByDate = (req, res) => {
     }
 
     if (!req.query.date) {
-      res.json(portal)
+      return res.json(portal)
     }
     portal.map((p) => {
       if (p.createdAt.toISOString().slice(0, 10) === req.query.date) {
