@@ -94,19 +94,23 @@ exports.findPortalByDate = (req, res) => {
       return res.status(400).json("No data found")
     }
 
+    let arr = []
+
     if (!req.query.date) {
       // console.log("1")
       return res.json(portal)
+    }
+
+    for (var i = 0; i < portal.length; i++) {
+      if (portal[i].createdAt.toISOString().slice(0, 10) === req.query.date) {
+        arr.push(portal[i])
+        console.log(arr)
+      }
+    }
+    if (arr.length < 1) {
+      return res.json(`No Portal found with date ${req.query.date}`)
     } else {
-      portal.map((p) => {
-        if (!(p.createdAt.toISOString().slice(0, 10) === req.query.date)) {
-          // console.log("2")
-          return res.json(`No Portal found with date ${req.query.date}`)
-        } else {
-          // console.log("3")
-          return res.json(p)
-        }
-      })
+      res.json(arr)
     }
   })
 }
