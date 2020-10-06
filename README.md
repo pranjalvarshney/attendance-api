@@ -1,2 +1,3 @@
 # Backend for Attendance Application
-Backend APIs for OTP based - Attendance System
+
+Backend API for Attendance Application with full otp authentication
